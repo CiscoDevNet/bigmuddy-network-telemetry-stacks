@@ -11,7 +11,7 @@ Three different stacks are prepackaged in this repository:
 The systems are independent and can be deployed independently or together.
 
 
-__Note: The streaming telemetry project is work in progress, and both the on and off box component of streaming telemetry are likely to evolve at a fast pace.__
+__Note: The streaming telemetry project is work in progress, and both the on and off box components of streaming telemetry are likely to evolve at a fast pace.__
 
 
 ## Installation
