@@ -1,0 +1,29 @@
+#
+# Debugging the script? set -x
+# 
+set -o pipefail
+set -o errtrace
+set -o nounset
+
+trap 'echo ${0}:TRAP: status $?: near line $LINENO; exit 1' ERR
+
+source ../common/util
+
+export STACKNAME="$(basename "$PWD")"
+
+if [ ! -d staging ]; then
+    exit_error "Staging directory is missing. This is highly likely because you have not run 'sudo COLLECTOR=a.b.c.d ./stack_build' yet. Please do so, and try again."
+fi
+
+mkdir -p log
+LOGFILE=log/$(basename "$0").log
+
+echo -------------------------------------------------------------- | tee --append $LOGFILE
+echo ""
+echo "%%% Running $(basename "$0") on $STACKNAME  - $(date) %%%" | tee --append $LOGFILE
+echo ""
+echo " Please 'tail -f ${LOGFILE}' to watch the action in detail"
+echo ""
+echo -------------------------------------------------------------- | tee --append $LOGFILE
+
+source ./staging/environment

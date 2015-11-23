@@ -1,0 +1,19 @@
+
+source "../util"
+
+mkdir -p staging
+cp src/* staging/
+
+#
+# Setup REPLACE to be the escaped string to use in sed. This will be
+# used to preprocess Dockerfiles to setup based on
+# configuration. Eventually docker will fix this to allow for build
+# time variables:
+#
+# https://github.com/docker/docker/pull/9176
+#
+REPLACE_HTTPS_PROXY=$(echo $https_proxy | sed -e 's/[\/&]/\\&/g')
+REPLACE_HTTP_PROXY=$(echo $http_proxy | sed -e 's/[\/&]/\\&/g')
+
+sed -i -e 's/https_proxy=".*"/https_proxy=\"'"$REPLACE_HTTPS_PROXY"'\"/g' $1
+sed -i -e 's/http_proxy=".*"/http_proxy=\"'"$REPLACE_HTTP_PROXY"'\"/g' $1

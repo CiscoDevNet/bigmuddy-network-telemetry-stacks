@@ -1,0 +1,12 @@
+#! /bin/bash
+
+cd "$(dirname "$0")"
+source ../util
+
+#
+# The prebuild elasticsearch image in the registry is just
+# fine! It exports /data which we use at runtime to pass
+# in a configurable /data/conf.d/elasticsearch.yml
+#
+log "Pulling elasticsearch:${ELASTICSEARCH_VERSION} docker image"
+exec_and_log "docker pull elasticsearch:${ELASTICSEARCH_VERSION}"

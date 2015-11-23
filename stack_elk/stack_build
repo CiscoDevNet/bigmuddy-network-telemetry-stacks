@@ -1,0 +1,55 @@
+#! /bin/bash
+
+#
+# Load support routines and configured environment for the stack and stage it.
+
+
+
+
+#
+cd "$(dirname "$0")"
+source ../common/stack_build_preamble
+
+#
+# Build docker images for components of stack
+#
+log "Building containers for stack components (takes a while, especially the first time)"
+../common/logstash/build  "${PWD}"/src >> $LOGFILE || exit_error "Failed to build logstash for elk_stack"
+../common/kibana/build >> $LOGFILE || exit_error "Failed to build kibana for elk_stack"
+../common/elasticsearch/build >> $LOGFILE || exit_error "Failed to build elasticsearch for elk_stack"
+
+#
+# Build configuration from scratch
+#
+# Initialise the volumes is necessary, in preparation for
+# configuration.
+#
+log "Initialising volumes for stack"
+../common/logstash/volumes_init || exit_error "Failed to setup logstash volumes"
+../common/kibana/volumes_init || exit_error "Failed to setup kibana volumes"
+../common/elasticsearch/volumes_init || exit_error "Failed to setup elasticsearch volumes"
+
+#
+# Update configurations in staging
+#
+log "Updating configuration to match stack environment"
+sed --in-place \
+    -e 's/COLLECTOR_PLACEHOLDER/'"$COLLECTOR"'/g' \
+    -e 's/ELASTICSEARCHCLUSTERNAME_PLACEHOLDER/'"$ELASTICSEARCHCLUSTERNAME"'/g' \
+    -e 's/ELASTICSEARCHHOST_PLACEHOLDER/'"$ELASTICSEARCHHOST"'/g' \
+    -e 's/ELASTICSEARCHPORT_CLIENT_PLACEHOLDER/'"$ELASTICSEARCHPORT_CLIENT"'/g' \
+    -e 's/ELASTICSEARCHPORT_CLUSTER_PLACEHOLDER/'"$ELASTICSEARCHPORT_CLUSTER"'/g' \
+    -e 's/ELASTICSEARCHPORT_CLUSTER_LOGSTASH_BIND_PLACEHOLDER/'"$ELASTICSEARCHPORT_CLUSTER_LOGSTASH_BIND"'/g' \
+    -e 's/TELEMETRYPORTTCP_PLACEHOLDER/'"$TELEMETRYPORTTCP"'/g' \
+    -e 's/TELEMETRYPORTUDP_PLACEHOLDER/'"$TELEMETRYPORTUDP"'/g' \
+    staging/*
+
+#
+# Copy logstash config to expected host volume location
+#
+log "Copying base configurations to the host volumes for stack"
+cp --verbose staging/ls_*.conf $LOGSTASH_VOLUME/conf.d >> $LOGFILE
+cp --verbose staging/kibana.yml $KIBANA_VOLUME/conf.d >> $LOGFILE
+cp --verbose staging/elasticsearch.yml $ELASTICSEARCH_VOLUME/conf.d >> $LOGFILE
+
+stack_script_postpend "Run ./stack_run when you are ready to fire up the stack"

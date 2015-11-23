@@ -1,0 +1,31 @@
+#! /bin/bash
+
+cd "$(dirname "$0")"
+source ../common/stack_preamble
+
+#
+# Run stack components
+#
+log "Run stack container"
+
+../common/logstash/run >> $LOGFILE || exit_error "Failed to run logstash container (need to run 'stack_stop'?)"
+
+#
+# Show running containers
+#
+log "Running containers:"
+docker ps -a
+
+! read -r -d '' NEXTSTEP <<EOM
+
+Telemetry streams can be pointed at any IP address on this server:
+
+Streams         @ TCP/${TELEMETRYPORTTCP} supporting compressed JSON
+
+Data can be viewed at https://app.signalfx.com
+
+EOM
+
+stack_script_postpend "$NEXTSTEP"
+
+

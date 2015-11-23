@@ -1,0 +1,5 @@
+#! /bin/bash
+
+if [ ! -d $PROMETHEUS_VOLUME/conf.d ]; then
+        mkdir -p $PROMETHEUS_VOLUME/conf.d
+fi

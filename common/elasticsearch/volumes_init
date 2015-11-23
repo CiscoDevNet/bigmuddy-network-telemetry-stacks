@@ -1,0 +1,5 @@
+#! /bin/bash
+
+if [ ! -d $ELASTICSEARCH_VOLUME/conf.d ]; then
+        mkdir -p $ELASTICSEARCH_VOLUME/conf.d
+fi

@@ -1,0 +1,13 @@
+#! /bin/bash
+
+cd "$(dirname "$0")"
+source ../util
+
+if [ ! -d "$ELASTICSEARCH_VOLUME" ]; then
+    exit_error "Running elasticsearch container without a host volume ($ELASTICSEARCH_VOLUME)"
+fi
+
+log "Running elasticsearch:${ELASTICSEARCH_VERSION} on ports ${ELASTICSEARCHPORT_CLUSTER}/${ELASTICSEARCHPORT_CLIENT}, host volume ${ELASTICSEARCH_VOLUME}" 
+
+exec_and_log "docker run -d --name ${STACKNAME}_elasticsearch --net=host -v ${ELASTICSEARCH_VOLUME}:/usr/share/elasticsearch/data elasticsearch:${ELASTICSEARCH_VERSION} elasticsearch --network.host=${COLLECTOR} --http.port=${ELASTICSEARCHPORT_CLIENT}-`expr ${ELASTICSEARCHPORT_CLIENT} + 100` --cluster.name=${ELASTICSEARCHCLUSTERNAME} --transport.tcp.port=${ELASTICSEARCHPORT_CLUSTER}-`expr ${ELASTICSEARCHPORT_CLUSTER} + 100`"
+

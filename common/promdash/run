@@ -1,0 +1,14 @@
+#! /bin/bash
+
+cd "$(dirname "$0")"
+source ../util
+
+if [ ! -d "$PROMDASH_VOLUME" ]; then
+    exit_error "Running prometheus dashboard container without a host volume ($PROMDASH_VOLUME)"
+fi
+
+log "Setup prometheus sqlite3 file container for promdash at ${PROMDASH_VOLUME}"
+exec_and_log "docker run --name ${STACKNAME}_promdash_db --rm -v ${PROMDASH_VOLUME}:/tmp/prom -e DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3 prom/promdash ./bin/rake db:migrate"
+log "Running promdash: container on port $PROMETHEUSDASH_PORT"
+exec_and_log "docker run -d --name ${STACKNAME}_promdash -p $PROMETHEUSDASH_PORT:3000 -v ${PROMDASH_VOLUME}:/tmp/prom -e DATABASE_URL=sqlite3:/tmp/prom/file.sqlite3 prom/promdash"
+

@@ -1,0 +1,29 @@
+# Global default settings.
+global:
+  scrape_interval: 15s     # By default, scrape targets every 15 seconds.
+  evaluation_interval: 15s # By default, evaluate rules every 15 seconds.
+
+  #
+  # Alerts can be specified in rule file. Uncomment below to evaluate rules.
+  #
+  # Load and evaluate rules in this file every 'evaluation_interval'
+  # seconds. This field may be repeated.
+  #
+  # rule_file: "prometheus.rules"
+  # 
+
+scrape_configs:
+
+ - job_name: "prometheus"
+   # Override scraping interval
+   scrape_interval: "10s"
+   target_groups:
+   - targets: ['COLLECTOR_PLACEHOLDER:PROMETHEUS_PORT_PLACEHOLDER']
+
+ - job_name: "TELEMETRYJOBNAME_PLACEHOLDER"
+   # Override scraping interval
+   scrape_interval: "5s"
+   target_groups:
+   - targets: ['COLLECTOR_PLACEHOLDER:PROMETHEUSPUSHGW_PORT_PLACEHOLDER']
+
+

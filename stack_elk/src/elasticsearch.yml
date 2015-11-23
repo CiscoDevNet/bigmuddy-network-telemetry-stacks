@@ -1,0 +1,7 @@
+cluster:
+  name: ELASTICSEARCHCLUSTERNAME_PLACEHOLDER
+
+path:
+  data: /usr/share/elasticsearch/data
+  logs: /usr/share/elasticsearch/data
+  work: /usr/share/elasticsearch/data

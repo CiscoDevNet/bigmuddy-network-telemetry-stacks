@@ -1,0 +1,3 @@
+mkdir -p staging
+cp src/* staging/
+source ../common/stack_preamble

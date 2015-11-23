@@ -1,0 +1,8 @@
+#! /bin/bash
+
+cd "$(dirname "$0")"
+source ../util
+
+log "Running prometheus_pushgw on ${COLLECTOR}:${PROMETHEUSPUSHGW_PORT}" 
+exec_and_log "docker run -d --name ${STACKNAME}_pushgw -p $PROMETHEUSPUSHGW_PORT:9091 prom/pushgateway"
+

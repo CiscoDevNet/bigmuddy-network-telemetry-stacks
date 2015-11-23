@@ -1,0 +1,41 @@
+#! /bin/bash
+
+#
+# Load support routines and configured environment for the stack and stage it.
+#
+cd "$(dirname "$0")"
+source ../common/stack_build_preamble
+
+#
+# Build docker images for components of stack
+#
+log "Building containers for stack components (takes a while, especially the first time)"
+../common/logstash/build "${PWD}"/src  >> $LOGFILE || exit_error "Failed to build logstash for signalfx stack"
+
+#
+# Build configuration from scratch
+#
+# Initialise the volumes is necessary, in preparation for
+# configuration.
+#
+log "Initialising volumes for stack"
+../common/logstash/volumes_init || exit_error "Failed to setup logstash volumes"
+
+#
+# Update configurations in staging
+#
+log "Updating configuration to match stack environment"
+REPLACE_HTTP_PROXY=$(echo $http_proxy | sed -e 's/[\/&]/\\&/g')
+sed --in-place \
+    -e 's/SIGNALFXPROXY_PLACEHOLDER/\"'"$REPLACE_HTTP_PROXY"'\"/g' \
+    -e 's/SIGNALFXTOKEN_PLACEHOLDER/'"$SIGNALFXTOKEN"'/g' \
+    -e 's/TELEMETRYPORTTCP_PLACEHOLDER/'"$TELEMETRYPORTTCP"'/g' \
+    staging/*
+
+#
+# Copy logstash config to expected host volume location
+#
+log "Copying base configurations to the host volumes for stack"
+cp --verbose staging/ls_*.conf $LOGSTASH_VOLUME/conf.d  >> $LOGFILE 
+
+stack_script_postpend "Run ./stack_run when you are ready to fire up the stack"

@@ -1,0 +1,36 @@
+#! /bin/bash
+
+cd "$(dirname "$0")"
+source ../component_build_preamble staging/*
+
+#
+# Fix up versions as suggested by stack owner
+#
+sed -i -e 's/LOGSTASH_VERSION_PLACEHOLDER/'$(echo $LOGSTASH_VERSION)'/g' staging/Dockerfile
+
+#
+# If .plugins directory does not exist, then populate it. This can be
+# removed once ruby gems are pushed upstream.
+#
+cd staging
+mkdir -p .builder
+log "Preparing logstash gem plugins"
+
+#
+# Test should look like this:
+#
+if [ -z "$1" ]
+then
+    log "No additional gems directory passed in"
+else
+    if [ -n "$(find $1 -maxdepth 1 -name '*.gem' -print -quit)" ]
+    then
+	log "Preparing additional, stack specific logstash gem plugins from $1"
+	cp --verbose $1/*.gem .builder
+    else
+	log "No stack additional gems in gem directory"
+    fi
+fi
+exec_and_log "docker build --force-rm -t logstash:$LOGSTASH_VERSION ."
+rm -r .builder
+

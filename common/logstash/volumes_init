@@ -1,0 +1,11 @@
+#! /bin/bash
+
+if [ ! -d $LOGSTASH_VOLUME/conf.d ]; then
+        mkdir -p $LOGSTASH_VOLUME/conf.d
+fi
+
+if [ ! -d $LOGSTASH_VOLUME/proto ]; then
+        mkdir -p $LOGSTASH_VOLUME/proto
+fi
+
+

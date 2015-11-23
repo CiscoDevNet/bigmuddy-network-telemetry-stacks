@@ -1,0 +1,10 @@
+#! /bin/bash
+
+cd "$(dirname "$0")"
+source ../common/stack_preamble
+
+docker rm -f ${STACKNAME}_logstash 2>/dev/null || echo "No logstash instance to kill"
+docker rm -f ${STACKNAME}_kibana 2>/dev/null || echo "No kibana instance to kill"
+docker rm -f ${STACKNAME}_elasticsearch 2>/dev/null || echo "No elasticsearch instance to kill"
+
+stack_script_postpend ""
