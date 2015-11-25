@@ -43,7 +43,7 @@ __This is it__.
 
 At this point your stack should be running and telemetry streams can be pointed at it.
 
-If you are using default configurations, port 2103 will be consumed by `stack_prometheus`, port `2104` will be consumed by `stack_elk` and port `2105` by `stack_signalfx`. TCP supports compressed JSON, whereas UDP supports protobuf (ELK stack only). The output plugin `telemetry_metrics` used by `stack_prometheus` and `stack_elk` does not support content exported over protobuf.
+If you are using default configurations, port `2103` will be consumed by `stack_elk`, port `2104` will be consumed by `stack_prometheus`, and port `2105` by `stack_signalfx`. TCP supports compressed JSON, whereas UDP supports protobuf (ELK stack only). The output plugin `telemetry_metrics` used by `stack_prometheus` and `stack_elk` does not support content exported over protobuf.
 
 If you are planning to use UDP/protobuf transport and encoding, then simply place the router generated `.proto` files in the location `\var\local\stack_elk\logstash_data\proto` between running `stack_build` and `stack_run`. If the files change at an point, restart the stack - this will cause the ruby bindings to be rebuilt.
 
