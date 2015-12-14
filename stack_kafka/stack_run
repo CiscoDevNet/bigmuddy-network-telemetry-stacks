@@ -1,0 +1,18 @@
+#! /bin/bash
+#
+# Load support routines and configured environment for the stack.
+#
+cd "$(dirname "$0")"
+source ../common/stack_preamble
+
+#
+# Run stack components
+#
+log "Run stack containers"
+../common/logstash/run >> $LOGFILE || exit_error "Failed to run logstash container (need to run 'stack_stop'?)"
+
+#
+# Show running containers
+#
+exec_and_log "docker ps -a"
+stack_script_postpend ""

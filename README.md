@@ -8,8 +8,9 @@ Three different stacks are prepackaged in this repository:
 - The `stack_prometheus` stack deploys a fleet of docker containers with [logstash](https://www.elastic.co/products/logstash), [prometheus](http://prometheus.io/), [pushgateway](http://prometheus.io/docs/instrumenting/pushing/) and [promdash](http://prometheus.io/docs/visualization/promdash/).
 - The `stack_signalfx` stack deploys a `logstash` container configured to feed telemetry into the cloud based [signal fx](https://signalfx.com/solutions/monitoring-for-operations/) monitoring system. Note that, while a free trial is available, the signal fx monitoring service is not free.
 
-The systems are independent and can be deployed independently or together.
+A very thin stack (i.e. logstash set up with telemetry input codecs, and [kafka output plugin configuration](https://www.elastic.co/guide/en/logstash/current/plugins-outputs-kafka.html#plugins-outputs-kafka-message_key)) is also provided in order to publish telemetry content on to a [kafka bus](http://kafka.apache.org/).
 
+The systems are independent and can be deployed independently or together (UDP/TCP stream endpoint ports may need to be changed in `environment` files).
 
 __Note: The streaming telemetry project is work in progress, and both the on and off box components of streaming telemetry are likely to evolve at a fast pace.__
 
@@ -78,7 +79,7 @@ Below are a couple of dashboard images; one from `stack_elk` and one from `stack
 
 ![Promdash snapshot](/common/png/promdash.png?raw=true "Screenshot of promdash")
 
-### Note about `signal fx`
+### Note about `signal fx` stack
 
 In order to use `stack_signalfx`, registration is required at https://signalfx.com/. Once registered, an organisation API Token can be retrieved from the profile page. This token should be setup in the `stack_signalfx/src/environment` as shown here (note the token is not made up in the example):
 
@@ -89,6 +90,10 @@ export SIGNALFXTOKEN="DuMMyExaMPLeT0KEn"
 Streams should be pointed at the `logstash` setup as for the other stacks. Go to `https://app.signalfx.com/` to visualise the data. The Usage Metric dashboard should show some number of datapoints received per second. Below is an example of dashboard setup to show IP SLA and interface counter data.
 
 ![Signalfx snapshot](/common/png/signalfxjitter.png?raw=true "Screenshot of Signal FX dashboard")
+
+### Note about `kafka` stack
+
+The minimum required configuration for the kafka stack is, as with all stacks, listed at the top of the `environment` file, and needs to be set prior to `stack_build`. Alternatively it can be set in the running configuration; by default `/var/local/stack_kafka/logstash_data/conf.d/ls_telemetry.conf`. Changes here would be overwritten if the stack is rebuilt.
 
 ## Building a production system?
 

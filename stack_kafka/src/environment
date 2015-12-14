@@ -1,0 +1,53 @@
+
+################################################################
+#
+# Values in this section MUST BE SET
+#
+################################################################
+
+#
+# Specify the bootstrap server here if bootstrapping is not local.
+#
+export BROKER_LIST="localhost:9092"
+#
+# Specify the topic you will be publishing to here.
+#
+export TOPIC="telemetry"
+
+################################################################
+#
+# Rest of the values have a sensible default
+#
+################################################################
+
+#
+# Proxies
+#
+# Replace "" with "http://example.org:80", where example.org:80
+# should reflect your http proxy.
+#
+export http_proxy=${http_proxy:-""}
+export https_proxy=${https_proxy-$http_proxy}
+
+#
+# Volumes
+#
+export LOGSTASH_VOLUME=/var/local/${STACKNAME}/logstash_data
+
+#
+# Ports handling telemetry and LPR telemetry
+#
+export TELEMETRYPORTTCP=5556
+export TELEMETRYPORTUDP=5556
+
+#
+# Codec, if not default JSON
+#
+export CODEC=""
+
+#
+# Versions
+#
+export LOGSTASH_VERSION=2.0.0
+
+
