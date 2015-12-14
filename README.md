@@ -8,7 +8,7 @@ Three different stacks are prepackaged in this repository:
 - The `stack_prometheus` stack deploys a fleet of docker containers with [logstash](https://www.elastic.co/products/logstash), [prometheus](http://prometheus.io/), [pushgateway](http://prometheus.io/docs/instrumenting/pushing/) and [promdash](http://prometheus.io/docs/visualization/promdash/).
 - The `stack_signalfx` stack deploys a `logstash` container configured to feed telemetry into the cloud based [signal fx](https://signalfx.com/solutions/monitoring-for-operations/) monitoring system. Note that, while a free trial is available, the signal fx monitoring service is not free.
 
-A very thin stack (i.e. logstash set up with telemetry input codecs, and [kafka output plugin configuration](https://www.elastic.co/guide/en/logstash/current/plugins-outputs-kafka.html#plugins-outputs-kafka-message_key)) is also provided in order to publish telemetry content on to a [kafka bus](http://kafka.apache.org/).
+A very thin stack (i.e. logstash set up with telemetry input codecs, and [kafka output plugin configuration](https://www.elastic.co/guide/en/logstash/current/plugins-outputs-kafka.html)) is also provided in order to publish telemetry content on to a [kafka bus](http://kafka.apache.org/).
 
 The systems are independent and can be deployed independently or together (UDP/TCP stream endpoint ports may need to be changed in `environment` files).
 
@@ -19,7 +19,7 @@ __Note: The streaming telemetry project is work in progress, and both the on and
 
 You will need a working [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [docker](https://docs.docker.com/installation/) setup; look for "Docker tips" below if you need help with this. If host is behind an HTTP proxy, refer to the pertinent section below.
 
-Clone the repository, pick the stack you would like to run, and follow the steps below. I use `stack_elk` as an example, but the same applies for `stack_prometheus` or `stack_signalfx`:
+Clone the repository, pick the stack you would like to run, and follow the steps below. I use `stack_elk` as an example, but the same applies for `stack_prometheus`, `stack_signalfx` or `stack_kafka`:
 
 ```
 git clone https://github.com/cisco/bigmuddy-network-telemetry-stacks.git
