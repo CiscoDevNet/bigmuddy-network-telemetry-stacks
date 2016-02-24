@@ -6,7 +6,7 @@ Three different stacks are prepackaged in this repository:
 
 - The `stack_elk` stack deploys a fleet of docker containers with [elasticsearch](https://www.elastic.co/products/elasticsearch), [logstash](https://www.elastic.co/products/logstash) and [kibana](https://www.elastic.co/products/kibana).
 - The `stack_prometheus` stack deploys a fleet of docker containers with [logstash](https://www.elastic.co/products/logstash), [prometheus](http://prometheus.io/), [pushgateway](http://prometheus.io/docs/instrumenting/pushing/) and [promdash](http://prometheus.io/docs/visualization/promdash/).
-- The `stack_signalfx` stack deploys a `logstash` container configured to feed telemetry into the cloud based [signal fx](https://signalfx.com/solutions/monitoring-for-operations/) monitoring system. Note that, while a free trial is available, the signal fx monitoring service is not free.
+- The `stack_signalfx` stack deploys a `logstash` container configured to feed telemetry into the cloud based [Signal Fx](https://signalfx.com/solutions/monitoring-for-operations/) monitoring system. Note that, while a free trial is available, the SignalFx monitoring service is not free.
 
 A very thin stack (i.e. logstash set up with telemetry input codecs, and [kafka output plugin configuration](https://www.elastic.co/guide/en/logstash/current/plugins-outputs-kafka.html)) is also provided in order to publish telemetry content on to a [kafka bus](http://kafka.apache.org/).
 
@@ -89,7 +89,7 @@ export SIGNALFXTOKEN="DuMMyExaMPLeT0KEn"
 
 Streams should be pointed at the `logstash` setup as for the other stacks. Go to `https://app.signalfx.com/` to visualise the data. The Usage Metric dashboard should show some number of datapoints received per second. Below is an example of dashboard setup to show IP SLA and interface counter data.
 
-![Signalfx snapshot](/common/png/signalfxjitter.png?raw=true "Screenshot of Signal FX dashboard")
+![SignalFx snapshot](/common/png/signalfxjitter.png?raw=true "Screenshot of SignalFx dashboard")
 
 ### Note about `kafka` stack
 
