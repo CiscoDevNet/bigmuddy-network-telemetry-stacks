@@ -38,14 +38,13 @@ fi
 [ -f /data/logstash.overrides ] && . /data/logstash.overrides
 
 HOME="${HOME:-$LS_HOME}"
-JAVA_OPTS="${LS_JAVA_OPTS}"
 
 # Reset filehandle limit
 ulimit -n ${LS_OPEN_FILES}
 cd "${LS_HOME}"
 
 # Export variables
-export PATH HOME JAVA_OPTS LS_HEAP_SIZE LS_JAVA_OPTS LS_USE_GC_LOGGING
+export PATH HOME LS_HEAP_SIZE LS_JAVA_OPTS LS_USE_GC_LOGGING
 test -n "${JAVACMD}" && export JAVACMD
 
 exec nice -n ${LS_NICE} /opt/logstash/bin/logstash agent -f "${LS_CONF_DIR}" -l "${LS_LOG_FILE}" ${LS_OPTS}

@@ -63,4 +63,4 @@ export PROMETHEUSDASH_PORT=3000
 #
 # Versions
 #
-export LOGSTASH_VERSION=2.0.0
+export LOGSTASH_VERSION=2.3.1
