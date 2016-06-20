@@ -41,7 +41,7 @@ export PROMDASH_VOLUME=/var/local/${STACKNAME}/promdash_data
 #
 # Ports handling telemetry
 #
-export TELEMETRYPORTTCP=5555
+export TELEMETRYPORTTCP=2104
 
 #
 # Prometheus push gateways
