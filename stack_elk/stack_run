@@ -24,7 +24,7 @@ Telemetry streams can be pointed at collector, and data viewed in kibana:
 
 Collector       @ ${COLLECTOR}
 Streams         @ UDP/${TELEMETRYPORTUDP} supporting gprotobuf or JSON
-Streams         @ TCP/${TELEMETRYPORTTCP} supporting compressed JSON
+Streams         @ TCP/${TELEMETRYPORTTCP} supporting JSON, GPB and self-describing GPB, compressed or not
 Kibana          @ http://${COLLECTOR}:${KIBANA_PORT}
 
 Note: if host has multiple addresses, use an address which is reachable from source (router or browser as the case may be).
