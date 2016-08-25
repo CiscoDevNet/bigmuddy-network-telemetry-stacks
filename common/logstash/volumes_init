@@ -8,5 +8,5 @@ if [ ! -d $LOGSTASH_VOLUME/proto ]; then
         mkdir -p $LOGSTASH_VOLUME/proto
 fi
 
-cp ../protos/gpb_kv/*.proto $LOGSTASH_VOLUME/proto/
+#cp ../protos/gpb_kv/*.proto $LOGSTASH_VOLUME/proto/
 # cp ../protos/gpb_compact/resources/xr6.0.0/protos/*.proto $LOGSTASH_VOLUME/proto/
