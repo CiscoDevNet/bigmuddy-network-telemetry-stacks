@@ -32,6 +32,11 @@ sudo COLLECTOR=a.b.c.d ./stack_build
 
 where `a.b.c.d` is the local IP address you wish to use. `stack_build` is executed to set up the default configurations, build the docker images etc, and is only required once.
 
+### Supporting Pre-6.1.1 Telemetry with the ELK stack
+By default, the ELK stack supports model-driven-telemetry (MDT) in XR 6.1.1.  To use the stacks for telemetry in XR 6.0.0 and XR 6.0.1, you will need to modify `bigmuddy-network-telemetry-stacks/stack_elk/src/ls_telemetry.conf` by changing `mdt => true` to `mdt => false`
+
+## Running the stack
+
 Start the fleet of containers using:
 
 ```
@@ -46,8 +51,15 @@ At this point your stack should be running and telemetry streams can be pointed 
 
 If you are using default configurations, port `2103` will be consumed by `stack_elk`, port `2104` will be consumed by `stack_prometheus`, and port `2105` by `stack_signalfx`. TCP supports compressed JSON, whereas UDP supports protobuf (ELK stack only). The output plugin `telemetry_metrics` used by `stack_prometheus` and `stack_elk` does not support content exported over protobuf.
 
-If you are planning to use UDP/protobuf transport and encoding, then simply place the router generated `.proto` files in the location `\var\local\stack_elk\logstash_data\proto` between running `stack_build` and `stack_run`. If the files change at an point, restart the stack - this will cause the ruby bindings to be rebuilt.
+###Using Google Protocol Buffer (GPB) encoding.  
 
+If you are using GPB encoding, place the appropriate `.proto` files in the location `/var/local/stack_elk/logstash_data/proto` between running `stack_build` and `stack_run`. If the files change at an point, restart the stack - this will cause the ruby bindings to be rebuilt.  To prevent namespace overlap, only copy the .proto for the encoding and version that you need.
+
+- For "encoding self-describing-gpb" with model-driven telemetry (MDT) in XR 6.1 onward, copy `bigmuddy-network-telemetry-stacks/protos/gpb_bis/telemetry_bis.proto` to `/var/local/stack_elk/logstash_data/proto`
+- For key-value gpb encoding over TCP with policy-driven telemetry (PDT) in XR 6.0, copy `bigmuddy-network-telemetry-stacks/protos/gpb_kv/telemetry_kv.proto` to `/var/local/stack_elk/logstash_data/proto`
+- For compact gpb encoding over UDP with policy-driven telemetry (PDT) in XR 6.0, copy `telemetry.proto`, `cisco.proto` and `descriptor.proto` from `bigmuddy-network-telemetry-stacks/protos/gpb_compact/resources/xr6.0.0` to `/var/local/stack_elk/logstash_data/proto`. In addition, copy any router-generated .protos to the same directory.  Some example router-generated protos can be found in `bigmuddy-network-telemetry-stacks/protos/gpb_compact/resources/xr6.0.0/protos/`
+
+## Stopping the stack
 Stopping the stack involves running `stack_stop`.
 
 ```
