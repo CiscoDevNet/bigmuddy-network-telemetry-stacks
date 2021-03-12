@@ -1,8 +1,0 @@
-#! /bin/bash
-
-cd "$(dirname "$0")"
-source ../common/stack_preamble
-
-docker rm -f ${STACKNAME}_logstash 2>/dev/null || echo "No logstash instance to kill"
-
-stack_script_postpend ""
