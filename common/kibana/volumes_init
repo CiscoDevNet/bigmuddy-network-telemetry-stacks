@@ -1,5 +1,0 @@
-#! /bin/bash
-
-if [ ! -d $KIBANA_VOLUME/conf.d ]; then
-        mkdir -p $KIBANA_VOLUME/conf.d
-fi

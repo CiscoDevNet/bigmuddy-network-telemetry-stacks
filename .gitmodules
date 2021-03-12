@@ -1,3 +1,0 @@
-[submodule "protos/gpb_compact"]
-	path = protos/gpb_compact
-	url = https://github.com/cisco/logstash-codec-bigmuddy-network-telemetry-gpb
